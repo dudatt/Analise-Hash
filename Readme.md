@@ -1,0 +1,1 @@
+# Análise de Desempenho de Hash
