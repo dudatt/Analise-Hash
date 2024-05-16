@@ -1,4 +1,5 @@
-import bcrypt; #pip install bcrypt
+import bcrypt #pip install bcrypt
+import hashlib
 
 def cadastrar(): 
     nameUser = input("Digite seu nome de usuário: ");
@@ -6,16 +7,9 @@ def cadastrar():
     users = {};
     users[nameUser] = senha;
 
-    salt = bcrypt.gensalt(8)  # Gera um salt (complexidade adicional) para a criptografia. 
-    # sequência aleatória única misturada com a senha antes de ser criptorgrafada.
-
-    hashSenha = bcrypt.hashpw(senha.encode(), salt);
-    # Cria o hash da senha combinando a senha digitada pelo usuário com o "salt" gerado.
-    #  O "encode()"" é usado para converter a senha de uma string para uma sequência de bytes, que é o formato necessário para a função "bcrypt.hashpw()".
-    
-    # print(f"Senha original: {senha}")
-    # print(f"Salt gerado: {salt.decode()}")
-    # print(f"Hash da senha: {hashSenha.decode()}");
+    hash_object = hashlib.sha256()
+    hash_object.update(senha.encode('utf-8'))
+    hashSenha = hash_object.hexdigest()
 
     with open('usuarios.txt', 'a') as arquivo_usuarios:
         for nameUser, senha in users.items():
@@ -37,19 +31,19 @@ def autenticacao(nameUser, senha, hashSenha):
         for i in range(5):
             i += 1;
 
-            if bcrypt.checkpw(senhaUser.encode(), hashSenha):
+            if hashlib.sha256(senhaUser.encode('utf-8')).hexdigest() == hashSenha:
                 print(f"Seja bem-vindo(a) {nameUser}!");
                 break;
             else:
                 print("Senha incorreta. Tente novamente.");
                 senhaUser = input("Insira sua senha: ");
-                bcrypt.checkpw(senhaUser.encode(), hashSenha);
+                hashlib.sha256(senhaUser.encode('utf-8')).hexdigest();
                 print(f"Total de tentativas ({i}/5)");
                 if i == 5:
                     print("Tentativas máximas alcançadas. Tente novamente mais tarde.");
                 continue;
 
-    elif bcrypt.checkpw(senhaUser.encode(), hashSenha) and loginUser == user:
+    elif hashlib.sha256(senhaUser.encode('utf-8')).hexdigest() == hashSenha and loginUser == user:
         print(f"Seja bem-vindo(a) {nameUser}!");
     else:
         print("Tente novamente mais tarde.")
