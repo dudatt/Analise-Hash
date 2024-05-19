@@ -8,7 +8,14 @@ def registrar_evento(mensagem):
 
 def cadastrar():
     nameUser = input("Digite seu nome de usuário: ")
+    if len(nameUser) > 4:
+        print("O nome de usuário deve ter no máximo 4 caracteres.")
+        return
+    
     senha = input("Digite sua senha: ")
+    if len(senha) > 4:
+        print("A senha deve ter no máximo 4 caracteres.")
+        return
 
     salt = bcrypt.gensalt()
     hashSenha = bcrypt.hashpw(senha.encode('utf-8'), salt)
