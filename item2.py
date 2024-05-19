@@ -1,3 +1,6 @@
+# tempo total: 00:00:05.67
+# tempo por senha: 00:00:02.46
+
 import hashlib
 import itertools
 import string
@@ -36,4 +39,3 @@ for user, valorHash in senhasArmazenadas.items():
         print('-----------------------------------')
     else:
         print(f'Não foi possível encontrar a senha para {user} dentro do limite de {max_comprimento} caracteres')
-
